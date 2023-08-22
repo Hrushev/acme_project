@@ -18,6 +18,9 @@
           {{ page.first_name }} {{ page.last_name }} — {{ page.birthday }}
         </div>
         <div>
+          <a href="{% url 'birthday:detail' page.id %}">Сколько до дня рождения?</a>
+        </div>
+        <div>
           <a href="{% url 'birthday:edit' page.id %}">Изменить запись</a> | <a href="{% url 'birthday:delete' page.id %}">Удалить запись</a>
         </div>
       </div>
