@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from .forms import BirthdayForm, CongratulationForm
-from .models import Birthday, Congratulation
+from .models import Birthday
 from .utils import calculate_birthday_countdown
 
 
@@ -22,13 +22,15 @@ class BirthdayCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-# Наследуем класс от встроенного ListView:
 class BirthdayListView(ListView):
-    # Указываем модель, с которой работает CBV...
     model = Birthday
-    # ...сортировку, которая будет применена при выводе списка объектов:
+    # По умолчанию этот класс
+    # выполняет запрос queryset = Birthday.objects.all(),
+    # но мы его переопределим:
+    queryset = Birthday.objects.prefetch_related(
+        'tags'
+    ).select_related('author')
     ordering = 'id'
-    # ...и даже настройки пагинации:
     paginate_by = 10
 
 
